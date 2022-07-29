@@ -8,5 +8,14 @@ jobs:
           password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - run: go get github.com/stretchr/testify/assert
-      - run: cd app && go test -v
+      - run:
+          name: Download test dependencies
+          command: go get github.com/stretchr/testify/assert
+      - run:
+          name: Test
+          command: go test -v ./app
+      - run:
+          name: Build Docker Image
+          command: docker build -t $AWS_ECR_REPOSITORY_NAME/sample-api:latest -f app/docker/Dockerfile .
+
+
