@@ -26,7 +26,7 @@ jobs:
           account-url: AWS_ECR_REPOSITORY_NAME
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: false
+          create-repo: true
           dockerfile: app/docker/Dockerfile
           path: .
           region: AWS_REGION
