@@ -7,4 +7,4 @@ jobs:
       - checkout
       - run:
           name: Build Docker image
-          command: docker build -t sample-api:latest -f app/docker/Dockerfile .
+          command: ls
