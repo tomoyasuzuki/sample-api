@@ -15,7 +15,7 @@ jobs:
           name: Test
           command: go test -v ./app
       - setup_remote_docker:
-          version: 20.10.17
+          version: 20.10.14
           docker_layer_caching: true
       - run:
           name: Login Docker
