@@ -1,0 +1,10 @@
+version: 2.1
+jobs:
+  build:
+    - checkout
+    - image: circleci/golang:1.18.0-alpine
+      aws_auth:
+        aws_access_key_id: AKIAQWERVA
+        aws_secret_access_key: $ECR_AWS_SECRET_ACCESS_KEY
+    - run:
+        command: go test -v
