@@ -6,8 +6,5 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Test
-          command: cd app && go test v
-      - run:
-          name: Build
-          command: go build
+          name: Build Docker image
+          command: docker build -t sample-api:latest -f app/docker/Dockerfile .
