@@ -3,5 +3,10 @@ jobs:
   build:
     - checkout
     - image: circleci/golang:1.18.0-alpine
-    - run:
-        command: go test -v
+    steps:
+      - run:
+        name: Test
+        command: cd app && go test v
+      - run:
+        name: Build
+        command: go build
