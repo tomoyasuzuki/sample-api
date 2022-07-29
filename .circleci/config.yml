@@ -8,4 +8,5 @@ jobs:
           password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - run: cd app && go mod download
+      - run: go get github.com/stretchr/testify/assert
+      - run: cd app && go test -v
