@@ -8,4 +8,4 @@ jobs:
           password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - run: echo "Hello, World"
+      - run: ls
