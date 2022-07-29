@@ -8,7 +8,7 @@ import (
 )
 
 func handleRoot(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, World (Method = %s)\n", r.Method)
+	fmt.Fprint(w, "Hello, World")
 }
 
 func routes() http.Handler {
