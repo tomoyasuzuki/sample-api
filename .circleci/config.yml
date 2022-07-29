@@ -3,8 +3,9 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.18
+        auth:
+          username: $DOCKER_USER_NAME
+          password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - run:
-          name: Build Docker image
-          command: ls
+      - run: echo "Hello, World"
