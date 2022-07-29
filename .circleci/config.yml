@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@6.12.2
 jobs:
   build:
     docker:
@@ -20,8 +22,15 @@ jobs:
       - run:
           name: Login Docker
           command: echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USER_NAME --password-stdin
-      - run:
-          name: Build Docker Image
-          command: docker build -t $AWS_ECR_REPOSITORY_NAME/sample-api:latest -f app/docker/Dockerfile .
+  aws-ecr/build-and-push-image:
+    account-url: $AWS_ECR_REPOSITORY_NAME
+    aws-access-key-id: $AWS_ACCESS_KEY_ID
+    aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+    create-repo: false
+    dockerfile: app/docker/Dockerfile
+    path: .
+    region: ap-northeast-1
+    repo: sample-api
+    tag: latest
 
 
