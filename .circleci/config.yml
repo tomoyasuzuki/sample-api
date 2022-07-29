@@ -8,4 +8,4 @@ jobs:
           password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - run: cd app && go test -v
+      - run: cd app && go mod download && go test -v
