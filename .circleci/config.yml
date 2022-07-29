@@ -8,4 +8,4 @@ jobs:
           password: $DOCKER_PASSWORD
     steps:
       - checkout
-      - run: docker build -t api-sample:latest -f app/docker/Dockerfile .
+      - run: cd app && go test -v
