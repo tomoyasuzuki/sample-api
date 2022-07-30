@@ -1,5 +1,4 @@
 # sample-api
-
 sample repository of rest api.
 
 # Build 
