@@ -14,6 +14,7 @@ type Task struct {
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
 	Status      uint       `json:"status"`
+	Deadline    time.Time  `json:"deadline"`
 	Assignees   []*User    `json:"assignees" gorm:"many2many:task_users;"`
 	Tags        []*Tag     `json:"tags" gorm:"many2many:task_tags;"`
 }
@@ -34,4 +35,10 @@ type User struct {
 	DeletedAt *time.Time `json:"deleted_at"`
 	Name      string     `json:"name"`
 	Tasks     []*Task    `json:"tasks" gorm:"many2many:task_users;"`
+}
+
+type Credentials struct {
+	UserID   uint   `gorm:"primary_key" json:"user_id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

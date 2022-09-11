@@ -18,5 +18,8 @@ func main() {
 		Handler: Routes(),
 	}
 
-	log.Fatal(srv.ListenAndServe())
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
