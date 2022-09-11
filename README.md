@@ -8,7 +8,7 @@ docker build -t sample-api:latest -f app/docker/Dockerfile .
 
 # Run
 ```
-docker run -it -p 8080:8080 sample-api:latest
+docker run -it -p 80:80 sample-api:latest
 ```
 
 # License

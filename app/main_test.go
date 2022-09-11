@@ -9,7 +9,7 @@ import (
 )
 
 func TestHandleRoot(t *testing.T) {
-	ts := httptest.NewServer(routes())
+	ts := httptest.NewServer(Routes())
 	defer ts.Close()
 
 	client := new(http.Client)

@@ -12,10 +12,12 @@ RUN go mod download
 COPY app ./app
 EXPOSE 80
 
-RUN adduser -D dev && chown -R dev ${ROOT}
-USER dev
+#RUN adduser -D dev && chown -R dev ${ROOT}
+#USER dev
 
-CMD ["go", "run", "app/main.go"]
+CMD ["go", "run", "app/main.go", "app/handlers.go", "app/controller.go", "app/utils.go", "app/models.go", "app/db.go"]
 
 # BUILD: docker build -t sample-api:latest -f app/docker/Dockerfile .
-# RUN  : docker run -it -p 8080:8080 sample-api:latest
+# RUN  : docker run -it -p 80:80 sample-api:latest
+# Build Only DB : docker-compose up -d db
+# Build Only App : docker-compose up --build go

@@ -1,28 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"github.com/go-chi/chi/v5"
 	"log"
 	"net/http"
 )
 
-func handleRoot(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello, World")
-}
-
-func routes() http.Handler {
-	mux := chi.NewRouter()
-
-	mux.Get("/", handleRoot)
-
-	return mux
-}
+const Port = ":80"
 
 func main() {
+	err := InitDB()
+	if err != nil {
+		panic(err)
+	}
+
 	srv := http.Server{
-		Addr:    ":80",
-		Handler: routes(),
+		Addr:    Port,
+		Handler: Routes(),
 	}
 
 	log.Fatal(srv.ListenAndServe())
