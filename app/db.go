@@ -2,28 +2,14 @@ package main
 
 import (
 	"fmt"
+	appError "github.com/tomoyasuzuki/sample-api/app/error"
+	"github.com/tomoyasuzuki/sample-api/app/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
 )
 
 var Db *gorm.DB
-
-func createDummyData() {
-	user := User{
-		Name:  "oshibori",
-		Tasks: []*Task{},
-	}
-	task := Task{
-		Title:       "test task",
-		Description: "This is a test task.",
-		Assignees:   []*User{},
-		Tags:        []*Tag{},
-	}
-
-	Db.Create(&user)
-	Db.Create(&task)
-}
 
 func InitDB() error {
 	var err error
@@ -48,19 +34,22 @@ func InitDB() error {
 	}
 
 	if err != nil {
-		return err
+		return appError.New(appError.ConnectionFailed)
 	}
 
 	fmt.Println("Succeeded to connect database.")
 
-	if err = Db.AutoMigrate(&Task{}); err != nil {
-		return err
+	if err = Db.AutoMigrate(&model.Task{}); err != nil {
+		return appError.New(appError.ConnectionFailed)
 	}
-	if err = Db.AutoMigrate(&User{}); err != nil {
-		return err
+	if err = Db.AutoMigrate(&model.User{}); err != nil {
+		return appError.New(appError.ConnectionFailed)
 	}
-	if err = Db.AutoMigrate(&Tag{}); err != nil {
-		return err
+	if err = Db.AutoMigrate(&model.Tag{}); err != nil {
+		return appError.New(appError.ConnectionFailed)
+	}
+	if err = Db.AutoMigrate(&model.Credentials{}); err != nil {
+		return appError.New(appError.ConnectionFailed)
 	}
 
 	return nil

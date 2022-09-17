@@ -1,4 +1,4 @@
-package main
+package model
 
 import (
 	"time"
@@ -34,6 +34,7 @@ type User struct {
 	UpdatedAt time.Time  `json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
 	Name      string     `json:"name"`
+	Token     *string    `json:"token"`
 	Tasks     []*Task    `json:"tasks" gorm:"many2many:task_users;"`
 }
 

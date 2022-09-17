@@ -1,0 +1,40 @@
+version: '3'
+services:
+  go:
+    container_name: go-app
+    build:
+      context: .
+      dockerfile: app/docker/Dockerfile
+    stdin_open: true
+    tty: true
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_HOSTNAME: db
+      MYSQL_PORT: 3306
+    ports:
+      - 80:80
+    depends_on:
+      - "db"
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - volume:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/migration.sql /docker-entrypoint-initdb.d/migration.sql
+    ports:
+      - 3306:3306
+
+volumes:
+  volume:
+    driver: local
