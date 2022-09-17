@@ -26,7 +26,7 @@ func (a AppError) Error() string {
 }
 
 func (a AppError) GetHttpCode() int {
-	return 1
+	return 200
 }
 
 func New(code Code) AppError {

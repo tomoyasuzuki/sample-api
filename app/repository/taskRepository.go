@@ -53,29 +53,29 @@ func (t *TaskRepository) GetTasksWith(userName string, tagName string) ([]model.
 
 	if userName != "" && tagName != "" {
 		if err := t.getTaskWith(
-			tasks,
-			withUser(t.Db),
-			withTag(t.Db),
-			byUserName(t.Db, userName),
-			byTagName(t.Db, tagName)); err != nil {
+			&tasks,
+			withUser,
+			withTag,
+			byUserName(userName),
+			byTagName(tagName)); err != nil {
 			return tasks, err
 		}
 	} else if userName != "" {
 		if err := t.getTaskWith(
-			tasks,
-			withUser(t.Db),
-			byUserName(t.Db, userName)); err != nil {
+			&tasks,
+			withUser,
+			byUserName(userName)); err != nil {
 			return tasks, err
 		}
 	} else if tagName != "" {
 		if err := t.getTaskWith(
-			tasks,
-			withTag(t.Db),
-			byTagName(t.Db, tagName)); err != nil {
+			&tasks,
+			withTag,
+			byTagName(tagName)); err != nil {
 			return tasks, err
 		}
 	} else {
-		if err := t.getTaskWith(tasks); err != nil {
+		if err := t.getTaskWith(&tasks); err != nil {
 			return tasks, err
 		}
 	}
@@ -99,42 +99,37 @@ func (t *TaskRepository) UpdateTask(task model.Task) error {
 	return nil
 }
 
-func (t *TaskRepository) getTaskWith(tasks []model.Task, scopes ...func(*gorm.DB) *gorm.DB) error {
+func (t *TaskRepository) getTaskWith(tasks *[]model.Task, scopes ...func(*gorm.DB) *gorm.DB) error {
 	if err := t.Db.
-		Model(&model.Task{}).
 		Preload("Assignees").
 		Preload("Tags").
 		Scopes(scopes...).
-		Find(&tasks).Error; err != nil {
+		Find(tasks).Error; err != nil {
 		return appError.New(appError.Unknown)
 	}
 	return nil
 }
 
-func withUser(db *gorm.DB) func(*gorm.DB) *gorm.DB {
-	return func(*gorm.DB) *gorm.DB {
-		return db.
-			Joins("JOIN task_users ON tasks.id = task_users.task_id").
-			Joins("JOIN users ON users.id = task_users.user_id")
-	}
+func withUser(db *gorm.DB) *gorm.DB {
+	return db.
+		Joins("JOIN task_users ON tasks.id = task_users.task_id").
+		Joins("JOIN users ON users.id = task_users.user_id")
 }
 
-func withTag(db *gorm.DB) func(*gorm.DB) *gorm.DB {
-	return func(*gorm.DB) *gorm.DB {
-		return db.
-			Joins("JOIN task_tags ON tasks.id = task_tags.task_id").
-			Joins("JOIN tags ON tags.id = task_tags.tag_id")
-	}
+func withTag(db *gorm.DB) *gorm.DB {
+	return db.
+		Joins("JOIN task_tags ON tasks.id = task_tags.task_id").
+		Joins("JOIN tags ON tags.id = task_tags.tag_id")
 }
 
-func byUserName(db *gorm.DB, userName string) func(*gorm.DB) *gorm.DB {
-	return func(*gorm.DB) *gorm.DB {
+func byUserName(userName string) func(*gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("users.name = ?", userName)
 	}
 }
 
-func byTagName(db *gorm.DB, tagName string) func(*gorm.DB) *gorm.DB {
-	return func(*gorm.DB) *gorm.DB {
+func byTagName(tagName string) func(*gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("tags.name = ?", tagName)
 	}
 }
